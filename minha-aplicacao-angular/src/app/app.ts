@@ -1,19 +1,12 @@
+
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ComponenteTeste } from './componente-teste/componente-teste';
+import { Aula2 } from './aula2/aula2';
 @Component({
-  imports: [RouterOutlet, ComponenteTeste],
   selector: 'app-root',
-  styleUrl: './app.css',
+  imports: [Aula2],
   templateUrl: './app.html',
+  styleUrl: './app.css',
 })
 export class App {
-  public exemplo = "Texto";
-
-  isAdmin = true;
-
-   mudarTexto(){
-    //alert("Funcao acionada");
-    this.exemplo = "Texto alterado";
-  }
+  protected readonly title = signal('minha-aplicacao-angular');
 }
