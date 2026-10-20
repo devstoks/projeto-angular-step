@@ -10,6 +10,8 @@ import { ComponenteTeste } from './componente-teste/componente-teste';
 export class App {
   public exemplo = "Texto";
 
+  isAdmin = true;
+
    mudarTexto(){
     //alert("Funcao acionada");
     this.exemplo = "Texto alterado";
