@@ -1,0 +1,853 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090b0a">
+
+    <title>STOKS — Esportes ao Vivo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #090b0a;
+            --surface: #111411;
+            --border: #292e27;
+            --green: #c6ff45;
+            --text: #f4f6f1;
+            --muted: #858c83;
+            --red: #ff4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 50% 0%, #1b2515 0%, transparent 40%),
+                var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        /* HEADER */
+
+        .topbar {
+            height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(9, 11, 10, .94);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: var(--green);
+            color: #10130d;
+            font: italic 900 27px 'Barlow Condensed', sans-serif;
+            transform: skew(-5deg);
+        }
+
+        .brand-name {
+            font: italic 900 34px 'Barlow Condensed', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .brand-name span,
+        .hero h1 span,
+        .section-heading h2 span {
+            color: var(--green);
+        }
+
+        .nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav a {
+            color: #a4aaa1;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: var(--green);
+        }
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 10px #ff444466;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            50% { opacity: .4; }
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 58px 6% 45px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 23px;
+            height: 2px;
+            background: var(--green);
+        }
+
+        .hero h1 {
+            margin-top: 15px;
+            font: 900 clamp(48px, 7vw, 82px)/.95 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            max-width: 520px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* CATEGORIAS */
+
+        .category-wrap {
+            padding: 0 6%;
+            background: #0d0f0d;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            padding: 19px 17px;
+            flex-shrink: 0;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            background: transparent;
+            color: #92988e;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: .2s;
+        }
+
+        .category:hover,
+        .category.active {
+            color: var(--green);
+            border-bottom-color: var(--green);
+        }
+
+        /* CONTEÚDO */
+
+        .main {
+            width: 100%;
+            max-width: 1600px;
+            margin: auto;
+            padding: 40px 6% 65px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font: 800 34px 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .section-heading p {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .live-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border: 1px solid #402626;
+            background: #1a1111;
+            color: #ff6969;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .broadcast {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 270px;
+            align-items: start;
+            gap: 18px;
+        }
+
+        /* PLAYER */
+
+        .player-card {
+            min-width: 0;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid #30352e;
+            border-radius: 7px;
+            box-shadow: 0 20px 60px #0005;
+        }
+
+        .player-top {
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 18px;
+            background: linear-gradient(90deg, #1b2118, #111411);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .channel-logo {
+            width: 46px;
+            height: 38px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 3px;
+            background: #f5f5f5;
+            color: #111;
+            font: italic 900 20px 'Barlow Condensed', sans-serif;
+        }
+
+        .channel-title {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .channel-subtitle {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .tool-button {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #353a32;
+            border-radius: 4px;
+            background: #20241e;
+            color: white;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .tool-button:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .player {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .player iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .player-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 15px 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .player-bottom p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .player-bottom strong {
+            color: white;
+        }
+
+        .quality {
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* LATERAL */
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .side-card {
+            padding: 19px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: linear-gradient(145deg, #171b16, #101210);
+        }
+
+        .side-title {
+            margin-bottom: 14px;
+            font: 800 22px 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .side-title span {
+            color: var(--green);
+        }
+
+        .match {
+            padding: 15px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .match-label {
+            margin-bottom: 9px;
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .match-title {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .match-description {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .side-note {
+            padding: 21px;
+            border-radius: 6px;
+            background: var(--green);
+            color: #10130d;
+        }
+
+        .side-note small {
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .side-note h3 {
+            margin-top: 10px;
+            font: 900 30px/.95 'Barlow Condensed', sans-serif;
+        }
+
+        .side-note p {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 26px 6%;
+            border-top: 1px solid var(--border);
+            color: #777e73;
+            font-size: 10px;
+        }
+
+        .footer-brand {
+            font: italic 900 23px 'Barlow Condensed', sans-serif;
+            color: white;
+        }
+
+        .footer-brand span {
+            color: var(--green);
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 950px) {
+            .broadcast {
+                grid-template-columns: minmax(0, 1fr) 230px;
+            }
+
+            .nav {
+                gap: 14px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar {
+                height: 66px;
+                padding: 0 5%;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 42px 5% 35px;
+            }
+
+            .category-wrap {
+                padding: 0 3%;
+            }
+
+            .category {
+                padding: 16px 12px;
+            }
+
+            .main {
+                padding: 30px 4% 45px;
+            }
+
+            .broadcast {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+            }
+
+            .side-note {
+                grid-column: 1 / -1;
+            }
+
+            footer {
+                padding: 24px 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-name {
+                font-size: 29px;
+            }
+
+            .brand-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 23px;
+            }
+
+            .live-status {
+                font-size: 8px;
+            }
+
+            .section-heading h2 {
+                font-size: 28px;
+            }
+
+            .section-heading p {
+                max-width: 230px;
+                line-height: 1.6;
+            }
+
+            .player-top {
+                padding: 12px;
+            }
+
+            .channel-logo {
+                width: 38px;
+                height: 34px;
+                font-size: 17px;
+            }
+
+            .channel-title {
+                font-size: 10px;
+            }
+
+            .player-bottom {
+                padding: 12px;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .side-note {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <a href="#" class="brand" aria-label="STOKS início">
+            <div class="brand-icon">S</div>
+            <div class="brand-name">STO<span>KS</span></div>
+        </a>
+
+        <nav class="nav">
+            <a href="#" class="active">Início</a>
+            <a href="#transmissao">Ao vivo</a>
+            <a href="#agenda">Programação</a>
+        </nav>
+
+        <div class="live-status">
+            <span class="live-dot"></span>
+            CENTRAL ESPORTIVA
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="eyebrow">A emoção não para</div>
+
+        <h1>
+            SEU ESPORTE.<br>
+            <span>SUA PAIXÃO.</span>
+        </h1>
+
+        <p>
+            Acompanhe o mundo esportivo em uma experiência
+            feita para quem vive cada lance.
+        </p>
+    </section>
+
+    <div class="category-wrap">
+        <nav class="categories" aria-label="Modalidades">
+            <a href="#transmissao" class="category active">▣ Destaques</a>
+            <a href="#transmissao" class="category">⚽ Futebol</a>
+            <a href="#transmissao" class="category">🏀 Basquete</a>
+            <a href="#transmissao" class="category">🏁 Automobilismo</a>
+            <a href="#transmissao" class="category">🎾 Tênis</a>
+        </nav>
+    </div>
+
+    <main class="main" id="transmissao">
+
+        <div class="section-heading">
+            <div>
+                <h2>AGORA <span>NA STOKS</span></h2>
+                <p>Seu espaço para acompanhar os esportes.</p>
+            </div>
+
+            <div class="live-tag">
+                <span class="live-dot"></span>
+                AO VIVO
+            </div>
+        </div>
+
+        <div class="broadcast">
+
+            <section class="player-card">
+
+                <div class="player-top">
+                    <div class="channel-info">
+                        <div class="channel-logo">ESPN</div>
+
+                        <div>
+                            <div class="channel-title">ESPN — Transmissão</div>
+                            <div class="channel-subtitle">Canal selecionado</div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="tool-button"
+                        id="fullscreenButton"
+                        type="button"
+                        aria-label="Tela cheia"
+                        title="Tela cheia">
+                        ⛶
+                    </button>
+                </div>
+
+                <div class="player" id="videoPlayer">
+                    <iframe
+                        id="sportsFrame"
+                        src="https://embedcanaisdetv.xyz/e/index.php?canal=espn"
+                        title="Player de vídeo"
+                        allow="autoplay; fullscreen; encrypted-media"
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                </div>
+
+                <div class="player-bottom">
+                    <p>
+                        <strong>STOKS SPORTS</strong><br>
+                        Viva cada jogada.
+                    </p>
+
+                    <span class="quality">PLAYER • 16:9</span>
+                </div>
+
+            </section>
+
+            <aside class="sidebar" id="agenda">
+
+                <section class="side-card">
+                    <div class="side-title">GUIA <span>ESPORTIVO</span></div>
+
+                    <div class="match">
+                        <div class="match-label">Futebol</div>
+                        <div class="match-title">Agenda de partidas</div>
+                        <div class="match-description">
+                            Consulte os calendários oficiais das competições.
+                        </div>
+                    </div>
+
+                    <div class="match">
+                        <div class="match-label">Basquete</div>
+                        <div class="match-title">NBA e competições</div>
+                        <div class="match-description">
+                            Notícias e programação esportiva.
+                        </div>
+                    </div>
+
+                    <div class="match">
+                        <div class="match-label">Automobilismo</div>
+                        <div class="match-title">Velocidade e corridas</div>
+                        <div class="match-description">
+                            Acompanhe as próximas etapas.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="side-note">
+                    <small>ESTA É A STOKS</small>
+                    <h3>VIVA CADA<br>SEGUNDO.</h3>
+                    <p>
+                        A adrenalina do esporte merece um lugar à altura.
+                    </p>
+                </section>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-brand">STO<span>KS</span></div>
+        <p>Esporte é emoção. Viva cada jogada.</p>
+        <p>© 2026 STOKS.</p>
+    </footer>
+
+    <script>
+        /* =========================================
+           STOKS — BLOQUEADOR DE OVERLAYS DA PÁGINA
+           ========================================= */
+
+        (() => {
+            'use strict';
+
+            /*
+             * IMPORTANTE:
+             * Os seletores abaixo só podem remover elementos
+             * do documento principal da STOKS.
+             *
+             * Não é possível inspecionar o conteúdo interno
+             * de um iframe hospedado em outro domínio.
+             */
+
+            const adSelectors = [
+                '[class*="ad-overlay"]',
+                '[id*="ad-overlay"]',
+                '[class*="ads-overlay"]',
+                '[id*="ads-overlay"]',
+                '[class*="popup-ad"]',
+                '[id*="popup-ad"]',
+                '[class*="advertisement-modal"]',
+                '[id*="advertisement-modal"]'
+            ].join(',');
+
+            function removeMatchingElements(root) {
+                if (!(root instanceof Element)) {
+                    return;
+                }
+
+                if (root.matches(adSelectors)) {
+                    root.remove();
+                    return;
+                }
+
+                root.querySelectorAll(adSelectors).forEach(element => {
+                    element.remove();
+                });
+            }
+
+            function initializeAdObserver() {
+                document.querySelectorAll(adSelectors).forEach(element => {
+                    element.remove();
+                });
+
+                const observer = new MutationObserver(records => {
+                    for (const record of records) {
+                        for (const node of record.addedNodes) {
+                            removeMatchingElements(node);
+                        }
+                    }
+                });
+
+                observer.observe(document.documentElement, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+
+            if (document.documentElement) {
+                initializeAdObserver();
+            } else {
+                document.addEventListener(
+                    'DOMContentLoaded',
+                    initializeAdObserver,
+                    { once: true }
+                );
+            }
+        })();
+
+        /* =========================================
+           CONTROLE DE TELA CHEIA
+           ========================================= */
+
+        const player = document.getElementById('videoPlayer');
+        const fullscreenButton = document.getElementById('fullscreenButton');
+
+        fullscreenButton.addEventListener('click', async () => {
+            try {
+                if (document.fullscreenElement) {
+                    await document.exitFullscreen();
+                } else {
+                    await player.requestFullscreen();
+                }
+            } catch (error) {
+                console.error(
+                    'Não foi possível ativar a tela cheia:',
+                    error
+                );
+            }
+        });
+
+        /* =========================================
+           CATEGORIAS VISUAIS
+           ========================================= */
+
+        const categories = document.querySelectorAll('.category');
+
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                categories.forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                category.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
+```
